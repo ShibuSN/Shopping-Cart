@@ -7,7 +7,7 @@ var logger = require('morgan');
 var usersRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
 var hbs = require('express-handlebars')
-
+var db = require('./config/connection')
 
 var Handlebars = require('handlebars');
 var fileUpload = require('express-fileupload');
@@ -27,6 +27,14 @@ app.use(cookieParser());
 app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 
+db.connect((err)=>{
+  if (err) {
+    console.log("Connection to DB failed."+err)
+  } else {
+    console.log("DB connected to port 27017")
+  }
+
+})
 
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
